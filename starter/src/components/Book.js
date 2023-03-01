@@ -1,4 +1,5 @@
 import * as BooksAPI from "../BooksAPI";
+import PropTypes from "prop-types";
 
 const Book = ({book, books,changeShelf}) => {
 
@@ -18,7 +19,7 @@ const Book = ({book, books,changeShelf}) => {
             }}
           ></div>
           <div className="book-shelf-changer">
-            <select value={book?.shelf || ((books.books).find((resBook) => resBook.id === book.id))?.shelf || 'none'} onChange={(e) => update(e.target.value)}>
+            <select value={book?.shelf || (books.find((resBook) => resBook.id === book.id))?.shelf || 'none'} onChange={(e) => update(e.target.value)}>
               <option value="disabled" disabled>
                 Move to...
               </option>
@@ -33,6 +34,12 @@ const Book = ({book, books,changeShelf}) => {
         <div className="book-authors">{book.authors}</div>
       </div>
   );
+};
+
+Book.propTypes = {
+  book: PropTypes.object.isRequired,
+  books: PropTypes.array.isRequired,
+  changeShelf: PropTypes.func.isRequired,
 };
 
 export default Book;

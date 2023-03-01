@@ -1,16 +1,19 @@
 import * as BooksAPI from "../BooksAPI"
 import { Link } from "react-router-dom";
 import { useState } from "react"; 
-import Book from './Book'
+import Book from './Book';
+import PropTypes from "prop-types";
 
-const SearchPage = (books,changeShelf) => {
+const SearchPage = ({books,changeShelf}) => {
 
     const [query, setQuery] = useState("");
     const [resultBooks, setResultBooks] = useState([]);
 
     const updateQuery = (e) => {
       let query=e.target.value
-        if (query !== "") {
+      const numberValidation = /\d/;
+      const letterValidation=(query.toLowerCase()).includes('abcd');
+        if (query !== "" && !letterValidation && !numberValidation.test(query)) {
             BooksAPI.search(query, 100).then((res) => {
               if (res.error !== 'empty query') {
                 setResultBooks(res);
@@ -59,6 +62,11 @@ const SearchPage = (books,changeShelf) => {
     )
 
 }
+
+SearchPage.propTypes = {
+  books: PropTypes.array.isRequired,
+  changeShelf: PropTypes.func.isRequired,
+};
 
 export default SearchPage;
 
